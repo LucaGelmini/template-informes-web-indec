@@ -1,0 +1,3 @@
+.js-plotly-plot .plotly svg ,.main-svg { 
+    overflow: visible !important;   
+}

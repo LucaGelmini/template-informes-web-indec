@@ -1,0 +1,20 @@
+---
+export interface Props {
+    defaultTab?: boolean;
+    contentRef: string;
+}
+const { defaultTab = false, contentRef } = Astro.props;
+---
+
+<li
+    id={defaultTab ? "default-tab-container" : null}
+    class="font-semibold rounded-t -mb-px cursor-pointer flex flex-wrap bg-gradient-to-b from-gray-100 hover:bg-gray-200"
+>
+    <a
+        id={defaultTab ? "default-tab" : null}
+        href={`#${contentRef}`}
+        class="py-2 px-5 h-fit w-fit"
+    >
+        <slot />
+    </a>
+</li>

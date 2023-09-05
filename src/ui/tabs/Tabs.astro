@@ -1,0 +1,14 @@
+---
+export interface Props {
+    id: string;
+}
+
+const { id } = Astro.props;
+---
+
+<ul
+    id={id}
+    class="inline-flex w-full items-stretch overflow-x-scroll border-b border-gray-500 px-1 pt-2 md:overflow-visible"
+>
+    <slot />
+</ul>

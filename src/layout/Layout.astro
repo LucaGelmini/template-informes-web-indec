@@ -1,0 +1,55 @@
+---
+export interface Props {
+    title: string;
+    mainHeader?: string;
+    sidebarVisibility?: boolean;
+}
+
+const { title, mainHeader = title, sidebarVisibility = true } = Astro.props;
+import Footer from "./components/Footer.astro";
+import Header from "./components/header/Header.astro";
+import Main from "./components/main/Main.astro";
+import "../styles/global.css";
+---
+
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth bg-body font-sans">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link
+            rel="icon"
+            type="image/png"
+            href={import.meta.env.BASE_URL + "/favicon.ico"}
+        />
+        <meta name="generator" content={Astro.generator} />
+        <title>{title}</title>
+    </head>
+    <Header />
+    <body class="w-full">
+        <Main>
+            <h2 class="my-4 self-start text-3xl font-semibold">
+                {mainHeader}
+            </h2>
+            <slot />
+        </Main>
+        <Footer />
+    </body>
+
+    <script define:vars={{ sidebarVisibility }}>
+        const sidebars = document.querySelectorAll(".sidebar");
+        if (sidebarVisibility) {
+            sidebars.forEach((sidebar) => {
+                console.log(sidebar);
+
+                sidebar.classList.add("sticky");
+                sidebar.classList.remove("hidden");
+            });
+        } else {
+            sidebars.forEach((sidebar) => {
+                sidebar.classList.add("hidden");
+                sidebar.classList.remove("sticky");
+            });
+        }
+    </script>
+</html>

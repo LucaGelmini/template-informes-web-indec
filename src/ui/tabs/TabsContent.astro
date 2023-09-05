@@ -1,0 +1,86 @@
+---
+export interface Props {
+    tabsId: string;
+    className?: string;
+}
+
+const { tabsId, className = "" } = Astro.props;
+---
+
+<tab-id-data data-id={tabsId}></tab-id-data>
+<div
+    id={`${tabsId}-contents`}
+    class=`mt-2 flex w-full justify-center overflow-hidden ${className}`
+>
+    <slot />
+</div>
+
+<script>
+    class AstroTabs extends HTMLElement {
+        constructor() {
+            super();
+
+            const tabsId = this.dataset.id;
+
+            const tabsContainer = document.querySelector(`#${tabsId}`);
+            if (tabsContainer == null)
+                throw new Error(`TabId:${tabsId} is invalid`);
+
+            const tabTogglers: NodeListOf<HTMLElement> =
+                tabsContainer.querySelectorAll(`#${tabsId} a`);
+
+            const selectedTabClass = [
+                "border-t",
+                "border-r",
+                "border-l",
+                "border-gray-500",
+                "-mb-[1px]",
+                "bg-body",
+            ];
+
+            tabsContainer
+                .querySelector("#default-tab-container")
+                ?.classList.add(...selectedTabClass);
+
+            tabTogglers.forEach(function (toggler) {
+                toggler.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    let target = e.target as Node;
+                    let tabName = this.getAttribute("href") as string;
+
+                    let tabContents = document.querySelector(
+                        `#${tabsId}-contents`
+                    );
+                    if (!tabContents)
+                        throw new Error(
+                            "did not found tabs elements [Error @layouts/TabsContent.astro]"
+                        );
+
+                    for (let i = 0; i < tabContents.children.length; i++) {
+                        const tabsContainer = tabTogglers[i]?.parentElement
+                            ? tabTogglers[i].parentElement
+                            : null;
+                        if (tabsContainer) {
+                            tabsContainer.classList.remove(...selectedTabClass);
+                        }
+
+                        tabContents.children[i].classList.remove("hidden");
+                        tabContents.children[i].classList.add("flex");
+                        if ("#" + tabContents.children[i].id === tabName) {
+                            continue;
+                        }
+                        tabContents.children[i].classList.add("hidden");
+                        tabContents.children[i].classList.remove("flex");
+                    }
+                    if (target.parentNode) {
+                        (target.parentNode as HTMLElement).classList.add(
+                            ...selectedTabClass
+                        );
+                    }
+                });
+            });
+        }
+    }
+
+    customElements.define("tab-id-data", AstroTabs);
+</script>

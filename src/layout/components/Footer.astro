@@ -1,0 +1,27 @@
+---
+import pages, { links } from "../../helpers/pages";
+---
+
+<footer class="mt-10 bg-gray-800 px-10 py-5">
+    <div class="my-5 flex w-full flex-wrap justify-between">
+        <div class="mb-4 w-full text-center text-white md:w-1/4">
+            <a
+                href={import.meta.env.BASE_URL + "fullReport"}
+                class="mb-1 block w-full"
+                >Descargar informe completo
+            </a>
+        </div>
+        <div class="mb-4 w-full text-center text-white md:w-1/4">
+            <a class="mb-1" href={links.officialSite}>INDEC Argentina</a>
+            <br />
+            <a class="mb-1" href={links.directorateSubSite}>
+                Sector externo - Estadísticas de comercio exterior
+            </a>
+        </div>
+        <div class="mb-4 w-full text-center text-white md:w-1/4">
+            <a href={links.methodologicalReport} class="mb-1 block w-full"
+                >Metodología</a
+            >
+        </div>
+    </div>
+</footer>

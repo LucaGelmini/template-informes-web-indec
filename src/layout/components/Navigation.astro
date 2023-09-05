@@ -1,0 +1,42 @@
+---
+export interface Props {
+    pages: { [key: string]: string };
+}
+
+const { pages } = Astro.props;
+---
+
+<div class="hidden h-full justify-evenly px-10 md:flex" id="nav-container">
+    {
+        Object.keys(pages).map((page) => (
+            <a
+                href={pages[page]}
+                class="flex h-full items-center border-gray-500 px-2 font-bold text-grayText hover:border-b-2"
+            >
+                {page.toLocaleUpperCase()}
+            </a>
+        ))
+    }
+</div>
+
+<script is:inline>
+    const anchors = document.querySelectorAll("#nav-container a");
+    anchors.forEach((anchor, index) => {
+        const href = anchor.attributes.href.value;
+
+        if (
+            href === window.location.pathname ||
+            (index === 0 &&
+                window.location.pathname === import.meta.env.BASE_URL)
+        ) {
+            anchor.classList.add("border-b-2");
+        } else {
+            anchor.classList.remove("border-b-2");
+        }
+    });
+    // if (window.location.pathname === import.meta.env.BASE_URL) {
+    //     anchors[0].classList.add("border-b-2");
+    // } else {
+    //     anchors[0].classList.remove("border-b-2");
+    // }
+</script>

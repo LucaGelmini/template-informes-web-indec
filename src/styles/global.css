@@ -1,0 +1,14 @@
+/* src/styles/global.css */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+body {
+    @apply bg-body;
+}
+* {
+    @apply text-blackIndec;
+}
+hr {
+    @apply border-gray-500;
+}

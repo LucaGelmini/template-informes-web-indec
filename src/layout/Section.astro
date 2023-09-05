@@ -1,0 +1,37 @@
+---
+export interface Props {
+    isInTop?: boolean;
+    title: string;
+    initState?: object;
+}
+const { isInTop = false, title, initState = { estado: "hola" } } = Astro.props;
+---
+
+<section class="mb-16 w-full">
+    <astro-section data-title={title} id={isInTop ? "top" : title}>
+        <slot />
+    </astro-section>
+    <br />
+    <div class="text-sm">
+        <span class="mt-4 font-bold">FUENTE:</span> INDEC, Dirección Nacional de
+        Estadísticas del Sector Externo y Cuentas Internacionales.
+
+        <hr />
+    </div>
+
+    <script>
+        import { sectionsStore } from "../states/sectionsStates";
+        class AstroSection extends HTMLElement {
+            constructor() {
+                super();
+                const title = this.dataset.title;
+                if (title !== undefined) {
+                    sectionsStore.setKey(title, {
+                        rangeSlider: [window.innerWidth > 720 ? 0.8 : 0.8, 1],
+                    });
+                }
+            }
+        }
+        customElements.define("astro-section", AstroSection);
+    </script>
+</section>

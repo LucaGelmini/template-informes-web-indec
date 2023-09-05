@@ -1,0 +1,38 @@
+---
+import {
+    boxes,
+    ica_variation,
+} from "../data/dashboards/datos_barra_cajas.json";
+import { reportDate } from "../data/publishData.json";
+import locales from "../locales/locales";
+const { date: localeDate, number: localeNumber } = locales;
+
+const dateFormatOptions: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "long",
+};
+
+const dateString = localeDate(reportDate, dateFormatOptions);
+
+const totalAmount = boxes.x.monthly.amount + boxes.m.monthly.amount;
+const totalBalance = boxes.x.monthly.amount - boxes.m.monthly.amount;
+---
+
+<!-- <h3 class="text-xl font-semibold">
+    Intercambio comercial de {dateString}
+</h3> -->
+<p class="text-md">
+    En {dateString}, las exportaciones alcanzaron {
+        localeNumber(boxes.x.monthly.amount, false, 0)
+    } millones de dólares ({localeNumber(boxes.x.monthly.variation, true)} v.ia.)
+    y las importaciones, {localeNumber(boxes.m.monthly.amount, false, 0)} millones
+    de dólares ({localeNumber(boxes.m.monthly.variation, true)}). El intercambio
+    comercial (exportaciones más importaciones) {
+        ica_variation.monthly < 0 ? "disminuyó" : "aumentó"
+    }
+    {localeNumber(ica_variation.monthly, true)} en relación con igual mes del año
+    anterior, y alcanzó un monto de {localeNumber(totalAmount, false, 0)} millones
+    de dólares. La balanza comercial registró un {
+        totalBalance > 0 ? "superávit" : "déficit"
+    } de {localeNumber(totalBalance, false, 0)} millones de dólares.
+</p>

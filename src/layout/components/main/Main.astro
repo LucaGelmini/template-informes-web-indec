@@ -1,0 +1,55 @@
+---
+import IndexSidebar from "../../../ui/indexSidebar/IndexSidebar.astro";
+import publishData from "../../../data/publishData.json";
+import Navigation from "../Navigation.astro";
+import pages from "../../../helpers/pages";
+import StateIndicator from "./StateIndicator";
+
+const dateFormatOptions: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+};
+const formatter = new Intl.DateTimeFormat("es-AR", dateFormatOptions);
+const publishDate = formatter.format(new Date(publishData.publishDate));
+
+const nextReportDate =
+    "nextReportDate" in publishData
+        ? formatter.format(new Date(publishData.nextReportDate))
+        : undefined;
+---
+
+<div class="relative flex w-full flex-col xl:flex-row">
+    <IndexSidebar />
+    <div class="sticky top-0 z-20 w-full xl:hidden">
+        <StateIndicator client:only />
+    </div>
+    <!-- <div class="sticky top-0 z-20 hidden h-screen w-10 xl:block">
+        <ChangeDatasetPeriodButton className=" w-36" client:only />
+    </div> -->
+    <main
+        class="mx-auto flex h-full min-h-screen w-full max-w-6xl flex-col items-stretch overflow-hidden px-4 pt-6 xl:pt-0"
+    >
+        <nav
+            class="m-auto my-4 hidden h-10 w-full bg-navBarIndec md:block md:rounded-full"
+        >
+            <Navigation pages={pages} />
+        </nav>
+        <div class="w-full text-right text-xs">
+            <p>ISSN: {publishData.ISSN}</p>
+            <p>
+                <span class="font-semibold">Fecha de publicación:</span>
+                {publishDate}
+            </p>
+            {
+                nextReportDate !== undefined && (
+                    <p>
+                        <span class="font-semibold">Proximo informe: </span>
+                        {nextReportDate}
+                    </p>
+                )
+            }
+        </div>
+        <slot />
+    </main>
+</div>
